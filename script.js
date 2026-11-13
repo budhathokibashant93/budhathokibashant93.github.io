@@ -1,54 +1,40 @@
-const menuBtn=document.getElementById("menuBtn");
-const navLinks=document.getElementById("navLinks");
-const header=document.getElementById("header");
+const menuToggle = document.querySelector(".menu-toggle");
+const navMenu = document.querySelector(".nav-menu");
 
-menuBtn.addEventListener("click",function(){
+if (menuToggle && navMenu) {
+    menuToggle.addEventListener("click", () => {
+        const isOpen = navMenu.classList.toggle("active");
 
-navLinks.classList.toggle("active");
+        menuToggle.setAttribute("aria-expanded", isOpen);
+        menuToggle.innerHTML = isOpen
+            ? '<i class="fa fa-times"></i>'
+            : '<i class="fa fa-bars"></i>';
+    });
 
-if(navLinks.classList.contains("active")){
-menuBtn.innerHTML="✕";
-}else{
-menuBtn.innerHTML="☰";
+    navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.innerHTML = '<i class="fa fa-bars"></i>';
+        });
+    });
 }
 
+
+document.querySelectorAll(".year").forEach(element => {
+    element.textContent = new Date().getFullYear();
 });
 
 
-const links=document.querySelectorAll("#navLinks a");
+const form = document.querySelector("#contact-form");
 
-links.forEach(function(link){
+if (form) {
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-link.addEventListener("click",function(){
+        document.querySelector("#form-status").textContent =
+            "Thank you! Your form has been validated. Connect an email service to receive messages.";
 
-navLinks.classList.remove("active");
-menuBtn.innerHTML="☰";
-
-});
-
-});
-
-
-window.addEventListener("scroll",function(){
-
-if(window.scrollY>50){
-header.classList.add("scrolled");
-}else{
-header.classList.remove("scrolled");
+        form.reset();
+    });
 }
-
-});
-
-
-const contactForm=document.getElementById("contactForm");
-const formMessage=document.getElementById("formMessage");
-
-contactForm.addEventListener("submit",function(event){
-
-event.preventDefault();
-
-formMessage.innerHTML="Thank you! Your message has been received.";
-
-contactForm.reset();
-
-});
